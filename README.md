@@ -64,3 +64,27 @@ A modern **Task Management App for Gig Workers** built using **React Native + Ex
 - ⚙️ **React Navigation (Stack + Drawer)**
 
 ---
+## 📦 Getting Started
+
+### 1. Clone the Repository
+- git clone https://github.com/your-username/task-manager-app.git
+- cd task-manager-app
+- npm start
+
+### 2. Install Dependecies
+- npm install
+
+### 3. Use Expo Go Application (both iOS & Android)
+- scan the QR code or enter a URL manually
+
+🙋‍♂️ **About the Project**
+This project was developed as part of a React Native Internship Assignment. The goal was to build a real-world gig-task management app with clean architecture, Firebase backend, and platform-specific UI adjustments using Expo.
+
+📧 **Contact**
+Feel free to reach out if you face issues running the app or reviewing the code!
+
+📬 jadhaor181@gmail.com
+
+Built with 💙 using React Native + Expo
+
+---

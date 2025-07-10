@@ -43,7 +43,7 @@ A modern **Task Management App for Gig Workers** built using **React Native + Ex
 
 | Task List | Add Task | Settings |
 |-----------|----------|----------|
-| ![iOS TaskList](assets/screenshots/ios-tasklist.png) | ![iOS AddTask](assets/screenshots/ios-addtask.png) | ![iOS Settings](assets/screenshots/ios-settings.png) |
+| ![iOS TaskList](assets/screenshots/ios_task_list.PNG) | ![iOS AddTask](assets/screenshots/ios_add_task.PNG) | ![iOS Settings](assets/screenshots/ios_setting.PNG) |
 
 ### Android (Expo Go)
 

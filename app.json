@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "whatBytes-task-manager",
-    "slug": "whatBytes-task-manager",
+    "name": "WhatBytes-task-manager",
+    "slug": "WhatBytes-task-manager",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,17 +13,27 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ravindra.whatbytestaskmanager",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.ravindra.whatbytestaskmanager"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "998b79a3-155d-4b70-beac-e1b772bbf82f"
+      }
     }
   }
 }

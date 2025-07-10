@@ -26,7 +26,6 @@ export default function App() {
           <Stack.Screen name="AddTask" component={AddTaskScreen}/>
           <Stack.Screen name="EditTask" component={EditTaskScreen} />
           <Stack.Screen name="Settings" component={SettingsScreen}/>
-          
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

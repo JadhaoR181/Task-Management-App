@@ -67,8 +67,8 @@ A modern **Task Management App for Gig Workers** built using **React Native + Ex
 ## 📦 Getting Started
 
 ### 1. Clone the Repository
-- git clone https://github.com/your-username/task-manager-app.git
-- cd task-manager-app
+- git clone https://github.com/JadhaoR181/T.git
+- cd whatbytes-task-manager
 - npm start
 
 ### 2. Install Dependecies

@@ -49,7 +49,7 @@ A modern **Task Management App for Gig Workers** built using **React Native + Ex
 
 | Task List | Add Task | Settings |
 |-----------|----------|----------|
-| ![Android TaskList](assets/screenshots/android-tasklist.png) | ![Android AddTask](assets/screenshots/android-addtask.png) | ![Android Settings](assets/screenshots/android-settings.png) |
+| ![Android TaskList](assets/screenshots/android_task_list.png) | ![Android AddTask](assets/screenshots/android_add_task.png) | ![Android Settings](assets/screenshots/android_settings.png) |
 
 > Place screenshots inside `assets/screenshots/` folder.
 

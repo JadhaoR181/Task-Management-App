@@ -31,7 +31,7 @@ export default function LoginScreen({ navigation }) {
       <Button mode="contained" style={styles.button} onPress={handleLogin}>Log In</Button>
 
       <Text style={styles.switchText}>
-        Don’t have an account? <Text onPress={() => navigation.navigate('Signup')}>Get started!</Text>
+        Don’t have an account? <Text style={{color:"#5e5cef"}} onPress={() => navigation.navigate('Signup')}>Get started!</Text>
       </Text>
     </View>
   );
@@ -41,6 +41,6 @@ const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', padding: 20 },
   title: { marginBottom: 20, textAlign: 'center' },
   input: { marginBottom: 10 },
-  button: { marginVertical: 20 },
+  button: { marginVertical: 20 , color: "#5e5cef"},
   switchText: { textAlign: 'center' },
 });

@@ -58,7 +58,7 @@ export default function SignupScreen({ navigation }) {
       </Button>
 
       <Text style={styles.switchText}>
-        Already have an account? <Text onPress={() => navigation.navigate('Login')}>Log in</Text>
+        Already have an account? <Text style={{color:"#5e5cef"}} onPress={() => navigation.navigate('Login')}>Log in</Text>
       </Text>
     </View>
   );
@@ -68,6 +68,6 @@ const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', padding: 20 },
   title: { marginBottom: 20, textAlign: 'center' },
   input: { marginBottom: 10 },
-  button: { marginVertical: 20 },
+  button: { marginVertical: 20},
   switchText: { textAlign: 'center' },
 });

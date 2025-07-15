@@ -10,13 +10,14 @@ import EditTaskScreen from './src/screens/EditTaskScreen';
 import { PaperProvider } from 'react-native-paper';
 import DrawerNavigator from './src/navigation/DrawerNavigator';
 import SettingsScreen from './src/screens/SettingsScreen';
+import { LightTheme } from './src/theme/lightTheme';
 
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <PaperProvider>
+     <PaperProvider theme={LightTheme}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Onboarding">
           <Stack.Screen name="Onboarding" component={OnboardingScreen} />

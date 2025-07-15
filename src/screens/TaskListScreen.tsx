@@ -35,6 +35,8 @@ export default function TaskListScreen({ navigation }: { navigation: any }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [userInitial, setUserInitial] = useState('');
   const isFocused = useIsFocused();
+  const [viewHistory, setViewHistory] = useState(false); // toggle between My Tasks and History
+
 
   const openMenu = () => setMenuVisible(true);
   const closeMenu = () => setMenuVisible(false);
@@ -43,12 +45,14 @@ export default function TaskListScreen({ navigation }: { navigation: any }) {
     setLoading(true);
     try {
       const data = await getTasks();
-      const activeTasks = data.filter((task) => !task.isCompleted);
+const relevantTasks = viewHistory
+  ? data.filter((task) => task.isCompleted)      // completed tasks
+  : data.filter((task) => !task.isCompleted);
 
       const filteredByPriority =
         filterPriority === 'all'
-          ? activeTasks
-          : activeTasks.filter((task) => task.priority === filterPriority);
+          ? relevantTasks
+          : relevantTasks.filter((task) => task.priority === filterPriority);
 
       const filteredBySearch = filteredByPriority.filter((task) =>
         task.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -67,7 +71,7 @@ export default function TaskListScreen({ navigation }: { navigation: any }) {
     if (isFocused) {
       loadTasks();
     }
-  }, [isFocused, searchQuery.trim(), filterPriority]);
+  }, [isFocused, searchQuery.trim(), filterPriority, viewHistory]);
 
   useEffect(() => {
     const fetchUserInitial = async () => {
@@ -178,48 +182,63 @@ export default function TaskListScreen({ navigation }: { navigation: any }) {
     return grouped;
   };
 
-  const renderTaskItem = (task: Task) => {
-    const taskId = task.id ?? "";
-    const isCompleted = taskId ? completedMap[taskId] : false;
+  const renderHistoryList = () => {
+  return tasks.map((task) => renderTaskItem(task));
+};
 
-    return (
-      <TouchableOpacity
-        key={task.id}
-        style={[styles.taskItem, isCompleted && styles.taskItemCompleted]}
-        onPress={() => setSelectedTask(task)}
-      >
-        <View style={styles.taskInfo}>
-          <IconButton
-            icon={isCompleted ? "check-circle" : "checkbox-blank-circle-outline"}
-            iconColor="#5e5ce6"
-            size={22}
-            style={{ margin: 0, padding: 0, backgroundColor: "transparent" }}
-            onPress={() => handleMarkAsDone(task)}
-          />
-          <View>
-            <Text style={[styles.taskTitle, isCompleted && styles.taskTitleCompleted]}>
-              {task.title}
-            </Text>
-            <Text style={styles.taskDate}>
-              {format(new Date(task.dueDate), "d MMM")}
-            </Text>
+
+const renderTaskItem = (task: Task, isHistoryView: boolean = false) => {
+  const isCompleted = task.isCompleted;
+
+  return (
+    <TouchableOpacity
+      key={task.id}
+      style={[styles.taskItem, isCompleted && styles.taskItemCompleted]}
+      onPress={() => {
+        if (!isCompleted && !isHistoryView) {
+          setSelectedTask(task);
+        }
+      }}
+      activeOpacity={isCompleted || isHistoryView ? 1 : 0.8} // Disable press feedback
+    >
+      <View style={styles.taskInfo}>
+        <IconButton
+          icon={isCompleted ? "check-circle" : "checkbox-blank-circle-outline"}
+          iconColor="#5e5ce6"
+          size={22}
+           disabled={isCompleted || isHistoryView}
+          style={{ margin: 0, padding: 0, backgroundColor: "transparent" }}
+          onPress={() => {
+            if (!isCompleted && !isHistoryView) handleMarkAsDone(task);
+          }}
+        />
+        <View>
+          <Text style={[styles.taskTitle, isCompleted && styles.taskTitleCompleted]}>
+            {task.title}
+          </Text>
+          <Text style={styles.taskDate}>
+            {format(new Date(task.dueDate), "d MMM")}
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.tagsRow}>
+        {task.priority && (
+          <View
+            style={[
+              styles.tag,
+              styles[`tag_${task.priority}` as keyof typeof styles],
+            ]}
+          >
+            <Text style={styles.tagText}>{task.priority}</Text>
           </View>
-        </View>
-        <View style={styles.tagsRow}>
-          {task.priority && (
-            <View
-              style={[
-                styles.tag,
-                styles[`tag_${task.priority}` as keyof typeof styles],
-              ]}
-            >
-              <Text style={styles.tagText}>{task.priority}</Text>
-            </View>
-          )}
-        </View>
-      </TouchableOpacity>
-    );
-  };
+        )}
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+
 
   const grouped = groupTasks();
 
@@ -264,7 +283,10 @@ export default function TaskListScreen({ navigation }: { navigation: any }) {
 
         <Text style={styles.dateText}>Today, {format(new Date(), "d MMM")}</Text>
         <View style={styles.headerTitleRow}>
-          <Text style={styles.headerTitle}>My tasks</Text>
+          <Text style={styles.headerTitle}>
+  {viewHistory ? "History" : "My tasks"}
+</Text>
+
           <Menu
             visible={menuVisible}
             onDismiss={closeMenu}
@@ -320,21 +342,32 @@ export default function TaskListScreen({ navigation }: { navigation: any }) {
       </View>
 
       {/* Task List */}
-      {loading ? (
-        <View style={styles.loaderContainer}>
-          <Text style={{ marginBottom: 10, color: "#5e5ce6" }}>Loading tasks...</Text>
-          <ActivityIndicator size="large" color="#5e5ce6" />
-        </View>
+{loading ? (
+  <View style={styles.loaderContainer}>
+    <Text style={{ marginBottom: 10, color: "#5e5ce6" }}>Loading tasks...</Text>
+    <ActivityIndicator size="large" color="#5e5ce6" />
+  </View>
+) : (
+  <ScrollView style={[styles.scrollContainer, viewHistory && {paddingTop:15}]}>
+    {viewHistory ? (
+      tasks.length === 0 ? (
+        <Text style={{ color: '#999', textAlign: 'center', marginTop: 30 }}>
+          No completed tasks found.
+        </Text>
       ) : (
-        <ScrollView style={styles.scrollContainer}>
-          {Object.entries(grouped).map(([section, taskList]) => (
-            <View key={section} style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>{section}</Text>
-              {taskList.map((task) => renderTaskItem(task))}
-            </View>
-          ))}
-        </ScrollView>
-      )}
+        tasks.map((task) => renderTaskItem(task, true)) // Render full completed task list
+      )
+    ) : (
+      Object.entries(grouped).map(([section, taskList]) => (
+        <View key={section} style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>{section}</Text>
+          {taskList.map((task) => renderTaskItem(task))}
+        </View>
+      ))
+    )}
+  </ScrollView>
+)}
+
 
       {/* FAB */}
       <View style={styles.fab}>
@@ -343,9 +376,20 @@ export default function TaskListScreen({ navigation }: { navigation: any }) {
 
       {/* Bottom Bar */}
       <View style={styles.bottomBar}>
-        <IconButton icon="format-list-bulleted" size={24} iconColor="#5e5ce6" />
-        <IconButton icon="calendar" size={24} iconColor="#ccc" />
-      </View>
+  <IconButton
+    icon="format-list-bulleted"
+    size={24}
+    iconColor={viewHistory ? "#ccc" : "#5e5ce6"}
+    onPress={() => setViewHistory(false)}
+  />
+  <IconButton
+    icon="calendar"
+    size={24}
+    iconColor={viewHistory ? "#5e5ce6" : "#ccc"}
+    onPress={() => setViewHistory(true)}
+  />
+</View>
+
 
       {/* Task Modal */}
       {selectedTask && (

@@ -26,7 +26,7 @@ A modern **Task Management App for Gig Workers** built using **React Native + Ex
 - Filter tasks by priority and completion
 - Sort by due date (earliest to latest)
 
-### 🌙 Settings
+### ⚙️ Settings
 - Notification & Dark Mode toggles
 - View app version & privacy policy (placeholder)
 
